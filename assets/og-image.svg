@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <pattern id="hex" width="56" height="64" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)">
+      <path d="M28 2 54 17v30L28 62 2 47V17L28 2Z" fill="none" stroke="rgba(255,178,46,0.16)" stroke-width="1.2"/>
+    </pattern>
+    <radialGradient id="bg" cx="78%" cy="0%" r="120%">
+      <stop offset="0%" stop-color="#16514a"/>
+      <stop offset="60%" stop-color="#06201E"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#hex)"/>
+  <g transform="translate(80,90)">
+    <path d="M20 0 38 10v20L20 40 2 30V10L20 0Z" fill="none" stroke="#FFB22E" stroke-width="2.6"/>
+    <path d="M20 10 28 14.5v9L20 28l-8-4.5v-9L20 10Z" fill="#FE6E36"/>
+    <text x="58" y="28" fill="#ffffff" font-family="'Clash Display',sans-serif" font-size="24" font-weight="700">Inyosi × Constellation</text>
+  </g>
+  <text x="80" y="300" fill="#ffffff" font-family="'Clash Display','Satoshi',sans-serif" font-size="78" font-weight="700">A website that works</text>
+  <text x="80" y="385" fill="#FFB22E" font-family="'Clash Display','Satoshi',sans-serif" font-size="78" font-weight="700">as hard as you do.</text>
+  <text x="80" y="455" fill="rgba(255,255,255,0.62)" font-family="'Satoshi',sans-serif" font-size="28">Website Strategy &amp; Proposal · Three options, one recommendation</text>
+  <g transform="translate(80,520)">
+    <rect width="240" height="54" rx="27" fill="#FE6E36"/>
+    <text x="120" y="35" fill="#1a0a02" font-family="'Satoshi',sans-serif" font-size="21" font-weight="700" text-anchor="middle">View the proposal</text>
+  </g>
+</svg>
