@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inyosi CMS — Dashboard Preview</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@600,700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E3330; --teal:#173F3F; --deep:#06201E;
+    --orange:#FE6E36; --honey:#F5A623; --honey-soft:#FFE7B8;
+    --bg:#F3F5F4; --card:#FFFFFF; --line:#E7EBEA;
+    --text:#16201E; --muted:#6B7A77; --muted-2:#9AA8A4;
+    --green:#1f9d6b; --green-bg:#e6f5ee; --amber:#b9810a; --amber-bg:#fdf3dd; --blue:#2b6cb0; --blue-bg:#e7f0fa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Satoshi",system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px}
+  h1,h2,h3,.display{font-family:"Clash Display","Satoshi",sans-serif}
+  .demo-flag{position:fixed;top:10px;right:12px;z-index:50;background:var(--honey-soft);color:#7a5300;border:1px solid #e9cf95;
+    font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px}
+
+  /* SIDEBAR */
+  .side{width:236px;background:var(--deep);color:#cfe0dc;flex:0 0 auto;display:flex;flex-direction:column;padding:18px 14px}
+  .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 18px;font-family:"Clash Display";font-weight:700;color:#fff;font-size:16px}
+  .brand svg{width:26px;height:26px}
+  .nav{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+  .nav a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;color:#bcd0cc;font-weight:500;cursor:pointer;transition:.15s}
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav a.active{background:var(--orange);color:#1a0a02;font-weight:700}
+  .nav a svg{width:17px;height:17px}
+  .nav .cap{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);padding:16px 12px 6px}
+  .side .foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid rgba(255,255,255,.08)}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--honey);color:#3a2700;display:grid;place-items:center;font-weight:700;font-size:13px}
+
+  /* MAIN */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 26px}
+  .search{flex:1;max-width:420px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 12px;color:var(--muted)}
+  .search svg{width:15px;height:15px}
+  .search input{border:0;background:transparent;outline:none;width:100%;font-family:inherit;color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:7px;background:var(--orange);color:#1a0a02;font-weight:700;border:0;border-radius:9px;padding:10px 16px;cursor:pointer;font-family:inherit;font-size:13.5px}
+  .btn.sec{background:var(--bg);color:var(--text);border:1px solid var(--line)}
+  .content{padding:26px;overflow:auto}
+  .page{display:none}
+  .page.show{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+  .ph h1{font-size:24px;font-weight:700}
+  .ph p{color:var(--muted);margin-top:4px}
+
+  /* CARDS / STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+  .stat .lab{color:var(--muted);font-size:12.5px;display:flex;align-items:center;gap:7px}
+  .stat .hex{width:9px;height:9px;background:var(--honey);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  .stat .num{font-family:"Clash Display";font-size:30px;font-weight:700;margin-top:8px}
+  .stat .delta{font-size:12px;color:var(--green);margin-top:2px}
+
+  .grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-top:18px}
+  @media(max-width:980px){.grid2{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px}
+  .panel h3{font-size:15px;margin-bottom:12px}
+  .act{display:flex;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+  .act:first-of-type{border-top:0}
+  .act .dot{width:30px;height:30px;border-radius:8px;background:var(--honey-soft);color:#8a5a00;display:grid;place-items:center;flex:0 0 auto}
+  .act .dot svg{width:15px;height:15px}
+  .act .t{font-weight:600}
+  .act .s{color:var(--muted);font-size:12.5px}
+  .qa{display:flex;flex-direction:column;gap:9px}
+  .qa button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--text)}
+  .qa button:hover{border-color:var(--honey)}
+  .qa .ic{width:26px;height:26px;border-radius:7px;background:var(--orange);color:#1a0a02;display:grid;place-items:center}
+  .qa .ic svg{width:15px;height:15px}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  thead th{text-align:left;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:13px 16px;background:#fafbfb;border-bottom:1px solid var(--line)}
+  tbody td{padding:14px 16px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#fafbfb}
+  .ttl{font-weight:600}
+  .sub{color:var(--muted);font-size:12px}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px}
+  .t-pub{background:var(--green-bg);color:var(--green)} .t-draft{background:var(--amber-bg);color:var(--amber)}
+  .t-new{background:var(--blue-bg);color:var(--blue)} .t-rev{background:#f0eaff;color:#6b46c1}
+  .rowbtn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 11px;cursor:pointer;font-family:inherit;font-weight:600;font-size:12.5px;color:var(--text)}
+  .rowbtn:hover{border-color:var(--orange);color:var(--orange)}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:980px){.cards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  .ccard .thumb{height:120px;background:linear-gradient(135deg,var(--teal),var(--ink));position:relative}
+  .ccard .thumb .hexpat{position:absolute;inset:0;opacity:.5}
+  .ccard .body{padding:14px}
+  .ccard h4{font-size:14.5px;margin-bottom:5px}
+  .ccard p{color:var(--muted);font-size:12.5px;line-height:1.5}
+  .ccard .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+  /* EDITOR DRAWER */
+  .scrim{position:fixed;inset:0;background:rgba(6,32,30,.45);display:none;z-index:60}
+  .scrim.show{display:block}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:520px;max-width:94vw;background:var(--card);z-index:61;transform:translateX(100%);transition:.28s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column}
+  .drawer.show{transform:none}
+  .drawer .dh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+  .drawer .dh h3{font-size:16px}
+  .drawer .db{padding:22px;overflow:auto;flex:1}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:700;font-size:12.5px;margin-bottom:6px}
+  .field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:13.5px;background:#fff;outline:none}
+  .field input:focus,.field textarea:focus{border-color:var(--honey)}
+  .field textarea{min-height:120px;resize:vertical}
+  .imgdrop{border:1.5px dashed #cfd8d6;border-radius:11px;padding:22px;text-align:center;color:var(--muted);font-size:13px}
+  .toggle{display:flex;align-items:center;gap:10px}
+  .switch{width:42px;height:24px;background:var(--green);border-radius:999px;position:relative}
+  .switch::after{content:"";position:absolute;top:3px;right:3px;width:18px;height:18px;background:#fff;border-radius:50%}
+  .drawer .df{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+  .x{border:0;background:transparent;cursor:pointer;color:var(--muted);font-size:20px;line-height:1}
+  .hint{background:var(--honey-soft);border:1px solid #ecd49a;color:#7a5300;border-radius:9px;padding:10px 12px;font-size:12.5px;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="demo-flag">Preview · sample data</div>
+
+<!-- SIDEBAR -->
+<aside class="side">
+  <div class="brand">
+    <svg viewBox="0 0 40 44" fill="none"><path d="M20 2 37 12v20L20 42 3 32V12L20 2Z" stroke="#F5A623" stroke-width="2.4"/><path d="M20 12 28 16.6v9.2L20 30.4 12 25.8v-9.2L20 12Z" fill="#FE6E36"/></svg>
+    Inyosi CMS
+  </div>
+  <nav class="nav" id="nav">
+    <a class="active" data-page="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg> Dashboard</a>
+    <div class="cap">Content</div>
+    <a data-page="blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg> Blog posts</a>
+    <a data-page="impact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 16l4-6 3 3 5-7"/></svg> Impact reports</a>
+    <a data-page="ben"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Beneficiary profiles</a>
+    <div class="cap">Leads</div>
+    <a data-page="apps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h9l5 5v13H5zM14 3v5h5M8 13h8M8 17h5"/></svg> Funding applications</a>
+    <div class="cap">Library</div>
+    <a data-page="media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="9" cy="9" r="1.5"/></svg> Media</a>
+    <a data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg> Settings</a>
+  </nav>
+  <div class="foot"><div class="avatar">E</div><div><div style="color:#fff;font-weight:600;font-size:13px">Erin</div><div style="font-size:11.5px;color:var(--muted-2)">Editor</div></div></div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Search content, applications, people..."></div>
+    <button class="btn" onclick="openDrawer('New blog post')"><svg width="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg> New</button>
+    <div class="avatar" title="Erin">E</div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <section class="page show" id="dash">
+      <div class="ph"><div><h1>Good morning, Erin</h1><p>Here's what's happening across the Inyosi site.</p></div></div>
+      <div class="stats">
+        <div class="stat"><div class="lab"><span class="hex"></span>Published posts</div><div class="num">24</div><div class="delta">+3 this month</div></div>
+        <div class="stat"><div class="lab"><span class="hex"></span>Impact reports</div><div class="num">7</div><div class="delta">2 in draft</div></div>
+        <div class="stat"><div class="lab"><span class="hex"></span>New applications</div><div class="num">12</div><div class="delta">this week</div></div>
+        <div class="stat"><div class="lab"><span class="hex"></span>Page views (30d)</div><div class="num">8.4k</div><div class="delta">+18%</div></div>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <h3>Recent activity</h3>
+          <div class="act"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h9l5 5v13H5z"/></svg></div><div><div class="t">New funding application from Makhoba Dairy</div><div class="s">Access to Funding · 2 hours ago</div></div></div>
+          <div class="act"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></div><div><div class="t">"Q2 Impact Report" edited</div><div class="s">Draft saved · yesterday</div></div></div>
+          <div class="act"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div><div><div class="t">Blog post "Skills that scale" published</div><div class="s">Live on site · 2 days ago</div></div></div>
+          <div class="act"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><div><div class="t">Beneficiary profile "Silulo" updated</div><div class="s">3 days ago</div></div></div>
+        </div>
+        <div class="panel">
+          <h3>Quick actions</h3>
+          <div class="qa">
+            <button onclick="openDrawer('New blog post')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span> Write a blog post</button>
+            <button onclick="openDrawer('New impact report')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span> Add an impact report</button>
+            <button onclick="openDrawer('New beneficiary profile')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span> Add a beneficiary profile</button>
+            <button onclick="go('apps')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Review funding applications</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section class="page" id="blog">
+      <div class="ph"><div><h1>Blog posts</h1><p>Publish weekly updates without a developer.</p></div><button class="btn" onclick="openDrawer('New blog post')">+ New post</button></div>
+      <table>
+        <thead><tr><th>Title</th><th>Status</th><th>Author</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="ttl">Skills that scale: our 2026 training cohort</td><td><span class="tag t-pub">Published</span></td><td>Erin</td><td>08 Jun 2026</td><td><button class="rowbtn" onclick="openDrawer('Edit blog post')">Edit</button></td></tr>
+          <tr><td class="ttl">How ESD funding actually reaches the ground</td><td><span class="tag t-pub">Published</span></td><td>Eric</td><td>01 Jun 2026</td><td><button class="rowbtn" onclick="openDrawer('Edit blog post')">Edit</button></td></tr>
+          <tr><td class="ttl">Five questions to ask before you apply</td><td><span class="tag t-draft">Draft</span></td><td>Erin</td><td>—</td><td><button class="rowbtn" onclick="openDrawer('Edit blog post')">Edit</button></td></tr>
+          <tr><td class="ttl">Supplier development, explained simply</td><td><span class="tag t-pub">Published</span></td><td>Erin</td><td>22 May 2026</td><td><button class="rowbtn" onclick="openDrawer('Edit blog post')">Edit</button></td></tr>
+          <tr><td class="ttl">Meet the 2026 investor panel</td><td><span class="tag t-rev">In review</span></td><td>Eric</td><td>—</td><td><button class="rowbtn" onclick="openDrawer('Edit blog post')">Edit</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="page" id="impact">
+      <div class="ph"><div><h1>Impact reports</h1><p>Showcase outcomes for investors and partners.</p></div><button class="btn" onclick="openDrawer('New impact report')">+ New report</button></div>
+      <div class="cards">
+        <div class="ccard"><div class="thumb"><svg class="hexpat" viewBox="0 0 200 120" preserveAspectRatio="none"><defs><pattern id="h1" width="22" height="26" patternUnits="userSpaceOnUse"><path d="M11 1 21 7v12L11 25 1 19V7Z" fill="none" stroke="rgba(245,166,35,.4)" stroke-width=".8"/></pattern></defs><rect width="200" height="120" fill="url(#h1)"/></svg></div><div class="body"><h4>Semi-Annual Impact Report · H1 2026</h4><p>Jobs created, businesses funded, and skills delivered across all programmes.</p><div class="meta"><span class="tag t-draft">Draft</span><button class="rowbtn" onclick="openDrawer('Edit impact report')">Edit</button></div></div></div>
+        <div class="ccard"><div class="thumb"><svg class="hexpat" viewBox="0 0 200 120" preserveAspectRatio="none"><rect width="200" height="120" fill="url(#h1)"/></svg></div><div class="body"><h4>Annual Impact Report 2025</h4><p>A full year of Access to Funding, Markets and Skills outcomes.</p><div class="meta"><span class="tag t-pub">Published</span><button class="rowbtn" onclick="openDrawer('Edit impact report')">Edit</button></div></div></div>
+        <div class="ccard"><div class="thumb"><svg class="hexpat" viewBox="0 0 200 120" preserveAspectRatio="none"><rect width="200" height="120" fill="url(#h1)"/></svg></div><div class="body"><h4>Sector Spotlight · Agriculture</h4><p>Deep dive on agri-beneficiaries and their growth.</p><div class="meta"><span class="tag t-pub">Published</span><button class="rowbtn" onclick="openDrawer('Edit impact report')">Edit</button></div></div></div>
+      </div>
+    </section>
+
+    <!-- BENEFICIARIES -->
+    <section class="page" id="ben">
+      <div class="ph"><div><h1>Beneficiary profiles</h1><p>Tell the stories of the businesses you've backed.</p></div><button class="btn" onclick="openDrawer('New beneficiary profile')">+ New profile</button></div>
+      <div class="cards">
+        <div class="ccard"><div class="body"><h4>Makhoba Dairy</h4><p>From a single herd to a regional supplier through ESD funding and mentorship.</p><div class="meta"><span class="tag t-pub">Published</span><button class="rowbtn" onclick="openDrawer('Edit beneficiary profile')">Edit</button></div></div></div>
+        <div class="ccard"><div class="body"><h4>Silulo Ulutho Technologies</h4><p>Scaling digital skills training across township communities.</p><div class="meta"><span class="tag t-pub">Published</span><button class="rowbtn" onclick="openDrawer('Edit beneficiary profile')">Edit</button></div></div></div>
+        <div class="ccard"><div class="body"><h4>Thembile Logistics</h4><p>A black-owned transport business funded into its second depot.</p><div class="meta"><span class="tag t-draft">Draft</span><button class="rowbtn" onclick="openDrawer('Edit beneficiary profile')">Edit</button></div></div></div>
+      </div>
+    </section>
+
+    <!-- APPLICATIONS -->
+    <section class="page" id="apps">
+      <div class="ph"><div><h1>Funding applications</h1><p>Every enquiry from the site lands here, ready to action.</p></div><button class="btn sec">Export CSV</button></div>
+      <table>
+        <thead><tr><th>Applicant</th><th>Type</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><div class="ttl">Makhoba Dairy</div><div class="sub">thabo@makhobadairy.co.za</div></td><td>Access to Funding</td><td>Today, 09:14</td><td><span class="tag t-new">New</span></td><td><button class="rowbtn" onclick="openDrawer('Application: Makhoba Dairy')">View</button></td></tr>
+          <tr><td><div class="ttl">Green Acres Co-op</div><div class="sub">info@greenacres.co.za</div></td><td>Access to Markets</td><td>Yesterday</td><td><span class="tag t-rev">In review</span></td><td><button class="rowbtn" onclick="openDrawer('Application: Green Acres Co-op')">View</button></td></tr>
+          <tr><td><div class="ttl">Nomsa's Catering</div><div class="sub">nomsa@nomsacatering.co.za</div></td><td>Access to Skills</td><td>08 Jun 2026</td><td><span class="tag t-rev">In review</span></td><td><button class="rowbtn" onclick="openDrawer('Application: Nomsa\'s Catering')">View</button></td></tr>
+          <tr><td><div class="ttl">Brightline Electrical</div><div class="sub">admin@brightline.co.za</div></td><td>Access to Funding</td><td>06 Jun 2026</td><td><span class="tag t-pub">Approved</span></td><td><button class="rowbtn" onclick="openDrawer('Application: Brightline Electrical')">View</button></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- MEDIA -->
+    <section class="page" id="media">
+      <div class="ph"><div><h1>Media library</h1><p>Images and documents used across the site.</p></div><button class="btn">+ Upload</button></div>
+      <div class="cards">
+        <div class="ccard"><div class="thumb"></div><div class="body"><h4>hero-beehive.jpg</h4><p class="sub">1.2 MB · used on Home</p></div></div>
+        <div class="ccard"><div class="thumb" style="background:linear-gradient(135deg,#FE6E36,#F5A623)"></div><div class="body"><h4>impact-2025.pdf</h4><p class="sub">3.4 MB · Impact reports</p></div></div>
+        <div class="ccard"><div class="thumb" style="background:linear-gradient(135deg,#173F3F,#0E3330)"></div><div class="body"><h4>team-photo.jpg</h4><p class="sub">2.0 MB · About page</p></div></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="settings">
+      <div class="ph"><div><h1>Settings</h1><p>Site basics, users, and SEO defaults.</p></div></div>
+      <div class="panel" style="max-width:560px">
+        <div class="field"><label>Site title</label><input value="Inyosi — Enterprise & Supplier Development"></div>
+        <div class="field"><label>Contact email</label><input value="info@inyosi.co.za"></div>
+        <div class="field"><label>Team members</label><input value="Erin (Editor), Eric (Editor), Admin"></div>
+        <div class="toggle"><div class="switch"></div><span>Show "Apply for funding" button in header</span></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- EDITOR DRAWER -->
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="dh"><h3 id="drawerTitle">Edit blog post</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="db">
+    <div class="hint">This is roughly how your team adds or edits content. Fill the fields, drop in an image, and publish. No code, no developer.</div>
+    <div class="field"><label>Title</label><input value="Skills that scale: our 2026 training cohort"></div>
+    <div class="field"><label>Summary</label><textarea>A look at the businesses joining this year's skills programme and what they're set to achieve.</textarea></div>
+    <div class="field"><label>Featured image</label><div class="imgdrop">Drag an image here, or click to upload</div></div>
+    <div class="field"><label>Category</label><select><option>News</option><option>Impact</option><option>Beneficiary story</option><option>Guides</option></select></div>
+    <div class="field"><label>Body</label><textarea style="min-height:160px">Write your update here. Headings, links, images and quotes are all supported, just like a word processor.</textarea></div>
+    <div class="toggle"><div class="switch"></div><span>Published (visible on the site)</span></div>
+  </div>
+  <div class="df"><button class="btn sec" onclick="closeDrawer()">Cancel</button><button class="btn" onclick="closeDrawer()">Save & publish</button></div>
+</div>
+
+<script>
+  const nav=document.getElementById('nav');
+  function go(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.toggle('show',p.id===id));
+    document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
+    document.querySelector('.content').scrollTop=0;
+  }
+  nav.addEventListener('click',e=>{const a=e.target.closest('a[data-page]');if(a)go(a.dataset.page);});
+  function openDrawer(t){document.getElementById('drawerTitle').textContent=t;document.getElementById('drawer').classList.add('show');document.getElementById('scrim').classList.add('show');}
+  function closeDrawer(){document.getElementById('drawer').classList.remove('show');document.getElementById('scrim').classList.remove('show');}
+</script>
+</body>
+</html>
